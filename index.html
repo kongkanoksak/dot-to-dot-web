@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dot-to-Dot Image Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="container">
+
+    <!-- Hamburger Menu -->
+    <div id="hamburger-menu">&#9776;</div>
+
+    <!-- Config Panel (hidden on mobile, slides down on hamburger click) -->
+    <div id="config-panel">
+        <button id="changeColorButton" disabled>Change Color</button>
+        <label for="fadeAmount">Enter Fade %:</label>
+        <input type="number" id="fadeAmount" value="50" min="0" max="100" />
+        
+        <!-- Color Picker for Dot Color -->
+        <label for="colorPicker">Select Dot Color:</label>
+        <input type="color" id="colorPicker" value="#ff0000" />
+        
+        <!-- Read-only input to display the current starting number -->
+        <label for="startingNo">Starting No:</label>
+        <input type="number" id="startingNo" value="0" readonly />
+        
+        <!-- Buttons for dot creation, undo, clear, and connection -->
+        <button id="dotButton">Dot</button>
+        <button id="undoButton">Undo</button>
+        <button id="clearButton">Clear</button>
+        <button id="connectDotsButton">Connect the Dots</button>
+        <button id="downloadButton">Download Points</button>
+    </div>
+
+    <!-- Drop Area for Image -->
+    <div id="drop-area">
+        <p>Drag & Drop Image Here or Click to Upload</p>
+        <input type="file" id="imageLoader" name="imageLoader"/>
+    </div>
+
+    <!-- Canvas where the dot-to-dot interactions will happen -->
+    <canvas id="canvas"></canvas>
+
+</div>
+
+<script src="main.js"></script>
+
+<script>
+    // Toggle the config panel when hamburger menu is clicked
+    document.getElementById('hamburger-menu').addEventListener('click', function() {
+        var configPanel = document.getElementById('config-panel');
+        configPanel.classList.toggle('active');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+#hamburger-menu {
+    display: none;  /* Hidden by default */
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1100;  /* Above config panel */
+    color: #333;
+}
+
+#config-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+    z-index: 1000; /* Stay on top */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#drop-area {
+    margin-top: 80px;  /* Push content below the config panel */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;  /* Let it grow to fill available space */
+    padding: 10px;
+}
+
+#drop-area input {
+    display: none;
+}
+
+canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hamburger Menu + Sliding Panel for Phone Sizes */
+@media (max-width: 768px) {
+    #hamburger-menu {
+        display: block;  /* Show hamburger menu on smaller screens */
+    }
+
+    /* Hide the config panel initially for small screens */
+    #config-panel {
+        position: fixed;
+        top: -100%;  /* Hide above the screen */
+        left: 0;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.9);
+        z-index: 1000;
+        padding: 20px;
+        transition: top 0.3s ease;  /* Slide down smoothly */
+    }
+
+    /* Show the panel when it's active */
+    #config-panel.active {
+        top: 0;  /* Slide the panel down from above */
+    }
+
+    #config-panel button, #config-panel input[type="number"], #config-panel input[type="color"] {
+        font-size: 14px;
+        padding: 8px;
+        width: 100%;  /* Full width for buttons */
+        margin: 3px 0;  /* Add vertical space between elements */
+    }
+}
+
+@media (max-width: 480px) {
+    #config-panel {
+        flex-direction: column;  /* Stack buttons vertically */
+        padding: 10px;
+    }
+
+    #config-panel button, #config-panel input[type="number"], #config-panel input[type="color"] {
+        font-size: 12px;
+        padding: 6px;
+        width: 100%;  /* Full width for smaller devices */
+        margin: 3px 0;
+    }
+
+    #drop-area p {
+        font-size: 12px;  /* Adjust text size for smaller screens */
+    }
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
+    #config-panel {
+        flex-wrap: wrap;
+    }
+    #config-panel button, #config-panel input[type="number"], #config-panel input[type="color"] {
+        flex: 1 0 20%; /* Make buttons take equal space */
+        font-size: 14px;
+        padding: 10px;
+    }
+}

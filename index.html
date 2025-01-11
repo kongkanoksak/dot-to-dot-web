@@ -3,58 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dot-to-Dot Image Tool</title>
+    <title>Dot-to-Dot Drawing Tool</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<div id="container">
-
-    <!-- Hamburger Menu -->
-    <div id="hamburger-menu">&#9776;</div>
-
-    <!-- Config Panel (hidden on mobile, slides down on hamburger click) -->
-    <div id="config-panel">
-        <button id="changeColorButton" disabled>Change Color</button>
-        <label for="fadeAmount">Enter Fade %:</label>
-        <input type="number" id="fadeAmount" value="50" min="0" max="100" />
+    <div id="controls">
+        <!-- Size Selection Controls -->
+        <select id="size-select">
+            <option value="A4">A4</option>
+            <option value="A5" selected>A5</option>
+            <option value="Letter">Letter</option>
+        </select>
+        <input type="number" id="width-input" placeholder="Width (in)" step="0.01">
+        <input type="number" id="height-input" placeholder="Height (in)" step="0.01">
+        <input type="range" id="zoom-input" min="50" max="200" value="100">
         
-        <!-- Color Picker for Dot Color -->
-        <label for="colorPicker">Select Dot Color:</label>
-        <input type="color" id="colorPicker" value="#ff0000" />
+        <!-- Toggle Dot-to-Dot Mode -->
+        <button id="dot-toggle">Enable Dot-to-Dot</button>
         
-        <!-- Read-only input to display the current starting number -->
-        <label for="startingNo">Starting No:</label>
-        <input type="number" id="startingNo" value="0" readonly />
-        
-        <!-- Buttons for dot creation, undo, clear, and connection -->
-        <button id="dotButton">Dot</button>
-        <button id="undoButton">Undo</button>
-        <button id="clearButton">Clear</button>
-        <button id="connectDotsButton">Connect the Dots</button>
-        <button id="downloadButton">Download Points</button>
+        <!-- Image Upload -->
+        <button id="upload-image">Upload Image</button>
+        <div id="dot-controls">
+            <label for="dot-color-picker">Dot Color:</label>
+            <input type="color" id="dot-color-picker" value="#0000ff">
+            <select id="dot-size-select">
+                <option value="normal" selected>Normal</option>
+                <option value="medium">Medium</option>
+                <option value="large">Large</option>
+                <option value="extra-large">Extra Large</option>
+            </select>
+        </div>
+        <div id="image-controls">
+            <label for="image-lock-toggle">Lock Movement:</label>
+            <input type="checkbox" id="image-lock-toggle" disabled>
+        </div>
+
+        <div id="drawing-controls">
+            <button id="brush-toggle">Enable Brush</button>
+            <label for="brush-color-picker">Brush Color:</label>
+            <input type="color" id="brush-color-picker" value="#000000">
+
+            <label for="brush-size">Brush Size:</label>
+            <input type="range" id="brush-size" min="1" max="50" value="5">
+
+            <label for="erase-mode-toggle">Eraser:</label>
+            <input type="checkbox" id="erase-mode-toggle">
+        </div>
+
+
+
+        <!-- Save Controls -->
+        <div id="save-controls">
+            <div id="image-controls">
+                <label for="transparency-slider">Transparency:</label>
+                <input type="range" id="transparency-slider" min="0" max="100" value="100">
+            </div>
+            <label for="file-type">File Type:</label>
+            <select id="file-type">
+                <option value="png" selected>PNG</option>
+                <option value="jpg">JPG</option>
+                <option value="webp">WEBP</option>
+            </select>
+            <label>
+                <input type="checkbox" id="save-only-dots">
+                Save Only Dots
+            </label>
+            <button id="save-button">Save File</button>
+        </div>
     </div>
 
-    <!-- Drop Area for Image -->
-    <div id="drop-area">
-        <p>Drag & Drop Image Here or Click to Upload</p>
-        <input type="file" id="imageLoader" name="imageLoader"/>
+    <!-- Canvas and Layers -->
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>
     </div>
-
-    <!-- Canvas where the dot-to-dot interactions will happen -->
-    <canvas id="canvas"></canvas>
-
-</div>
-
-<script src="main.js"></script>
-
-<script>
-    // Toggle the config panel when hamburger menu is clicked
-    document.getElementById('hamburger-menu').addEventListener('click', function() {
-        var configPanel = document.getElementById('config-panel');
-        configPanel.classList.toggle('active');
-    });
-</script>
+    <div id="layer-panel">
+        <button id="delete-all-layers">Delete All Layers</button>
+        <h3>Layers</h3>
+        <ul id="layer-list"></ul>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="canvasPan.js"></script>
+    <script src="script.js"></script>
+    <script src="images.js"></script>
+    <script src="drawing.js"></script>
 
 </body>
 </html>

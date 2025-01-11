@@ -225,3 +225,67 @@ deleteAllLayersButton.addEventListener('click', () => {
 
     drawCanvas(); // Clear the canvas
 });
+
+
+canvas.addEventListener('touchstart', (event) => {
+    if (!isBrushEnabled) return;
+
+    const touch = event.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left - canvasOffset.x;
+    const y = touch.clientY - rect.top - canvasOffset.y;
+
+    const scale = currentZoom / 100;
+    const paperPixelWidth = paperWidth * 96 * scale;
+    const paperPixelHeight = paperHeight * 96 * scale;
+    const offsetX = (canvas.width - paperPixelWidth) / 2;
+    const offsetY = (canvas.height - paperPixelHeight) / 2;
+
+    if (
+        x >= offsetX &&
+        x <= offsetX + paperPixelWidth &&
+        y >= offsetY &&
+        y <= offsetY + paperPixelHeight
+    ) {
+        isDrawing = true;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        currentDrawing = { points: [], color: brushColor, size: brushSize, erase: false };
+    }
+});
+
+canvas.addEventListener('touchmove', (event) => {
+    if (!isDrawing) return;
+
+    const touch = event.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left - canvasOffset.x;
+    const y = touch.clientY - rect.top - canvasOffset.y;
+
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = isEraseMode ? '#FFFFFF' : brushColor;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    if (currentDrawing) {
+        currentDrawing.points.push({ x, y });
+        currentDrawing.color = isEraseMode ? '#FFFFFF' : brushColor;
+        currentDrawing.size = brushSize;
+        currentDrawing.erase = isEraseMode;
+    }
+});
+
+canvas.addEventListener('touchend', () => {
+    if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+
+        if (currentDrawing) {
+            drawings.push(currentDrawing);
+            addDrawingToLayerPanel(drawCounter++);
+            currentDrawing = null;
+        }
+    }
+});

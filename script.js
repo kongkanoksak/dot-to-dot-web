@@ -415,5 +415,69 @@ canvas.addEventListener('mouseup', () => {
     isMiddleMousePressed = false;
 });
 
+
+// Add touch support for placing dots and interacting with objects
+canvas.addEventListener('touchstart', (event) => {
+    const touch = event.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left - canvasOffset.x;
+    const y = touch.clientY - rect.top - canvasOffset.y;
+
+    if (isDotModeEnabled) {
+        // Handle dot placement
+        const scale = currentZoom / 100;
+        const paperPixelWidth = paperWidth * 96 * scale;
+        const paperPixelHeight = paperHeight * 96 * scale;
+        const offsetX = (canvas.width - paperPixelWidth) / 2;
+        const offsetY = (canvas.height - paperPixelHeight) / 2;
+
+        if (
+            x >= offsetX &&
+            x <= offsetX + paperPixelWidth &&
+            y >= offsetY &&
+            y <= offsetY + paperPixelHeight
+        ) {
+            const newDot = { x, y, number: dotCounter++ };
+            dots.push(newDot);
+            addDotToLayerPanel(newDot.number);
+            updateLayerPanel();
+            drawCanvas();
+        }
+    }
+});
+
+// Support for dragging objects on touch
+canvas.addEventListener('touchmove', (event) => {
+    const touch = event.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const x = touch.clientX - rect.left - canvasOffset.x;
+    const y = touch.clientY - rect.top - canvasOffset.y;
+
+    if (draggingObject || resizingImage) {
+        if (resizingImage) {
+            const aspectRatio = resizingImage.width / resizingImage.height;
+            resizingImage.width = Math.max(50, x - resizingImage.x);
+            resizingImage.height = resizingImage.width / aspectRatio;
+        } else if (draggingObject) {
+            draggingObject.x = x - (draggingObject.width || 0) / 2;
+            draggingObject.y = y - (draggingObject.height || 0) / 2;
+        }
+
+        drawCanvas();
+    }
+});
+
+// Stop dragging on touch end
+canvas.addEventListener('touchend', () => {
+    draggingObject = null;
+    resizingImage = null;
+});
+
+
+
+
 setCanvasFullscreen();
 window.addEventListener('resize', setCanvasFullscreen);
+
+
+

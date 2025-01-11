@@ -1,89 +1,172 @@
-body {
+/* General Reset */
+body, html {
     margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: row;
-    height: 100vh;
     overflow: hidden;
 }
 
-#controls {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    background-color: #f3f3f3;
-    border-right: 1px solid #ccc;
-}
-
-#controls select,
-#controls input,
-#controls button {
-    margin-bottom: 10px;
-    padding: 5px;
-    font-size: 14px;
-}
-
+/* Canvas Container */
 #canvas-container {
-    flex: 1;
     position: relative;
-    overflow: hidden;
-    justify-content: flex-start;
-}
-
-#canvas {
-    display: block;
-    background-color: #eaeaea;
-}
-
-#layer-panel {
-    width: 250px;
+    width: 100%;
+    height: calc(100vh - 100px);
     background-color: #f9f9f9;
-    border-left: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Canvas Element */
+canvas {
+    display: block;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Controls */
+#controls {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #333;
+    color: white;
     padding: 10px;
+    z-index: 1000;
+}
+
+#controls button,
+#controls input,
+#controls select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    margin: 5px;
+    border: none;
+    outline: none;
+}
+
+#controls button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#controls button:hover {
+    background-color: #0056b3;
+}
+
+#controls input[type="range"] {
+    width: 150px;
+}
+
+#controls input[type="color"] {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+}
+
+/* Layer Panel */
+#layer-panel {
+    position: fixed;
+    right: 0;
+    top: 100px;
+    width: 300px;
+    height: calc(100vh - 100px);
+    background-color: #f0f0f0;
+    border-left: 1px solid #ccc;
     overflow-y: auto;
+    z-index: 1000;
+    padding: 10px;
 }
 
 #layer-panel h3 {
-    margin: 0;
-    margin-bottom: 10px;
+    margin-top: 0;
+    font-size: 18px;
+    text-align: center;
 }
 
 #layer-list {
-    list-style: none;
+    list-style-type: none;
     padding: 0;
-    margin: 0;
 }
 
 #layer-list li {
+    padding: 10px;
+    background-color: white;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    margin-bottom: 5px;
     cursor: pointer;
 }
 
 #layer-list li:hover {
-    background-color: #f0f0f0;
+    background-color: #eaeaea;
 }
 
 .delete-icon {
     color: red;
     cursor: pointer;
+    font-weight: bold;
 }
 
-#image-controls {
+/* Save Controls */
+#save-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin-top: 10px;
+    gap: 10px;
+}
+
+/* Image Controls */
+#image-controls {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
-#image-controls label {
-    margin-right: 10px;
+#image-controls input[type="range"] {
+    flex: 1;
 }
 
-#transparency-slider {
-    width: 150px;
+/* Media Queries for Touch Optimization */
+@media (max-width: 768px) {
+    #controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #controls button,
+    #controls input,
+    #controls select {
+        width: 90%;
+        margin-bottom: 10px;
+    }
+
+    #layer-panel {
+        width: 100%;
+        height: auto;
+        position: static;
+        border: none;
+    }
+
+    #canvas-container {
+        height: calc(100vh - 150px);
+    }
+
+    #layer-list li {
+        font-size: 16px;
+        padding: 15px;
+    }
 }
